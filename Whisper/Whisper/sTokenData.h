@@ -15,8 +15,8 @@ namespace Whisper
 		float vlen;        // voice length of the token
 		// token-level timestamp data
 		// do not use if you haven't computed token-level timestamps
-		int64_t t0;        // start time of the token
-		int64_t t1;        //   end time of the token
+		int64_t t0 = -1;        // start time of the token
+		int64_t t1 = -1;        //   end time of the token
 	};
 
 
