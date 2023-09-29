@@ -6,6 +6,8 @@
 #include <array>
 #include <atomic>
 #include "textWriter.h"
+#include <locale>
+
 using namespace Whisper;
 
 #define STREAM_AUDIO 1
@@ -174,7 +176,8 @@ static void __stdcall setPrompt( const int* ptr, int length, void* pv )
 int wmain( int argc, wchar_t* argv[] )
 {
 	// Whisper::dbgCompareTraces( LR"(C:\Temp\2remove\Whisper\ref.bin)", LR"(C:\Temp\2remove\Whisper\gpu.bin )" ); return 0;
-
+	std::locale::global(std::locale("en_US.UTF-8")); //force locale to make ukrainian output work
+	SetConsoleOutputCP(CP_UTF8); //chcp 65001
 	// Tell logger to use the standard output stream for the messages
 	{
 		Whisper::sLoggerSetup logSetup;
