@@ -453,7 +453,7 @@ HRESULT COMLIGHTCALL ContextImpl::runFullImpl( const sFullParams& params, const 
 {
 	auto ts = device.setForCurrentThread();
 	const Whisper::Vocabulary& vocab = model.shared->vocab;
-
+	std::string* lasttext = new std::string("");
 	// Ported from whisper_full() function
 	result_all.clear();
 	if( params.flag( eFullParamsFlags::SpeedupAudio ) )
@@ -737,6 +737,15 @@ HRESULT COMLIGHTCALL ContextImpl::runFullImpl( const sFullParams& params, const 
 								return hr;
 						}
 					}
+
+					//try avoid repetition by resetting the prompt if last text repeated
+					if (0 == strncmp(lasttext->c_str(), text.c_str(), text.length())) {
+						logDebug(u8"last text repeated, clearing token/prompt past");
+						prompt_past.clear();
+						
+					}
+					 delete lasttext;
+					lasttext = new std::string(text);
 					text = "";
 					while( i < (int)tokens_cur.size() && tokens_cur[ i ].id > vocab.token_beg )
 						i++;
